@@ -8,10 +8,11 @@ SECRET_KEY = os.environ.get('cyber_eye_secret_key')
 
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
-if DEBUG:
-    ALLOWED_HOSTS = []
-else:
-    ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
+# if DEBUG:
+#     ALLOWED_HOSTS = []
+# else:
+#     ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
+ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
 
 
 INSTALLED_APPS = [
