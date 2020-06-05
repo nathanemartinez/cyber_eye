@@ -1,0 +1,33 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'components_styles/navbar.css' %}">
+
+
+<nav class="navbar fixed-top navbar-dark bg-dark" id="main-navbar">
+  <!--Main navbar link-->
+  <a class="navbar-brand" id="navbar-brand" href="/">CyberEye</a>
+
+  <!--Toggle switch-->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!--Links-->
+  <div class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent">
+
+      <ul class="nav navbar-nav navbar-right">
+
+          <li class="nav-item" id="projects-nav-item">
+              <a class="nav-link" id="projects-nav-link" href="#">Projects</a>
+          </li>
+
+          <li class="nav-item" id="about-nav-item">
+              <a class="nav-link" id="about-nav-link" href="#">About</a>
+          </li>
+
+          <li class="nav-item" id="tester-nav-item">
+              <a class="nav-link" id="tester-nav-link" href="#">Tester</a>
+          </li>
+
+      </ul>
+  </div>
+</nav>
