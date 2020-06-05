@@ -4,11 +4,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 
-SECRET_KEY = '0luk5(f#&fb+wav!3c+_wvuwum=v(qux1c@b@^+fc!9uxi@oh='
+SECRET_KEY = 'AWRGOINingr8248GH88b4N2128H*'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
 
 
 INSTALLED_APPS = [
