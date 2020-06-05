@@ -4,11 +4,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 
-SECRET_KEY = 'AWRGOINingr8248GH88b4N2128H*'
+SECRET_KEY = os.environ.get('cyber_eye_secret_key')
 
-DEBUG = True
+DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
-ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
 
 
 INSTALLED_APPS = [
