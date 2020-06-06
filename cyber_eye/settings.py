@@ -13,7 +13,8 @@ DEBUG = True
 # if DEBUG:
 #     ALLOWED_HOSTS = []
 # else:
-ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
 # Security
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
