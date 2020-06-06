@@ -16,7 +16,7 @@ else:
     ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
     # Security
     SECURE_SSL_REDIRECT = True
-    # SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
     # CSRF_COOKIE_SECURE = True
     # SECURE_REFERRER_POLICY = True
 
