@@ -17,7 +17,7 @@ else:
     # Security
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
-    # CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
     # SECURE_REFERRER_POLICY = True
 
 INSTALLED_APPS = [
