@@ -7,7 +7,6 @@ DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 
 SECRET_KEY = os.environ.get('cyber_eye_secret_key')
 
-# DEBUG = False
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
 if DEBUG:
@@ -18,7 +17,7 @@ else:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_REFERRER_POLICY = True
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
