@@ -7,7 +7,7 @@ DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 
 SECRET_KEY = os.environ.get('cyber_eye_secret_key')
 
-DEBUG = False
+DEBUG = True
 # DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
 # if DEBUG:
