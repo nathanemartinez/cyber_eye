@@ -7,19 +7,18 @@ DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 
 SECRET_KEY = os.environ.get('cyber_eye_secret_key')
 
-DEBUG = True
+DEBUG = False
 # DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
 # if DEBUG:
 #     ALLOWED_HOSTS = []
 # else:
-ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
+ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
 # Security
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_REFERRER_POLICY = True
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_REFERRER_POLICY = True
 
 
 INSTALLED_APPS = [
@@ -35,7 +34,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',  # DJANGO WHITENOISE CONFIGURATION
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -111,9 +110,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
