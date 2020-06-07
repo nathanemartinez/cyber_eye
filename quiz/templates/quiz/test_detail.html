@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Test Detail{% endblock %}
+
+
+{% block content %}
+
+    <div class="container-fluid text-center">
+        <h1> {{ test }}</h1>
+        {% for question in questions %}
+            <h4> {{ question }} </h4>
+        {% endfor %}
+
+        <div class="mt-4 mb-4">
+            <a href="{% url 'quiz:test-update' test.pk %}" class="btn btn-outline-primary">Update</a>
+            <a href="{% url 'quiz:test-delete' test.pk %}" class="btn btn-outline-danger">Delete</a>
+        </div>
+
+        <a href="{% url 'quiz:test_list' %}">Back to list view</a>
+    </div>
+
+{% endblock %}
+
+
+
+

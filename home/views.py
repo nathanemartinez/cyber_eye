@@ -1,8 +1,16 @@
 from django.shortcuts import render
 
 
-def home_page(request):
+def home(request):
     return render(request, 'home/home.html')
+
+
+def projects(request):
+    return render(request, 'home/projects.html')
+
+
+def about(request):
+    return render(request, 'home/about.html')
 
 
 # *** ERROR PAGES ***

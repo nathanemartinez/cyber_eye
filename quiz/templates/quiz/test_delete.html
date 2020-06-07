@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Test Delete{% endblock %}
+
+
+{% block content %}
+
+    <div class="container text-center">
+        <h1>Delete a test</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            <h3>Confirm "{{ test.title }}" deletion</h3>
+            <div class="form-group">
+                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                <a class="btn btn-outline-primary" href="{% url 'quiz:test-detail' test.pk %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+
+

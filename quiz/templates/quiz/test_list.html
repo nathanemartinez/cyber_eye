@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Test List{% endblock %}
+
+
+{% block content %}
+
+    <div class="container-fluid text-center">
+        <h1 class="mb-5">Test list</h1>
+        {% for test in tests %}
+            <h1><a href="{% url 'quiz:test-detail' test.id %}">{{ test }}</a></h1>
+        {% endfor %}
+
+        <a href="{% url 'quiz:test-create' %}" class="btn btn-outline-primary mt-3">Create a test</a>
+    </div>
+
+{% endblock %}
+
+
+
+

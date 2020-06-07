@@ -4,7 +4,9 @@ from home import views
 app_name = 'home'
 urlpatterns = [
     # Home page
-    path('', views.home_page, name='home'),
+    path('', views.home, name='home'),
+    path('projects/', views.projects, name='projects'),
+    path('about/', views.about, name='about'),
 
     # TEST ERROR PAGES
     path('400/', views.error_400, name='400'),
