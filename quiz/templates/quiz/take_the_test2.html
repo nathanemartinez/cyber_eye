@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <div class="container text-center">
+        <br>
+        {{ testing }}
+        <form method="POST" >
+            {% csrf_token %}
+            {% for question in questions %}
+                <h3>{{ question }}</h3>
+                {{ form|crispy }}
+            {% endfor %}
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+        <br>
+        <br>
+        {% include 'components/paginator.html' %}
+    </div>
+
+{% endblock %}
+
+
+
+

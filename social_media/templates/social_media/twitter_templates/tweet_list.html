@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for tweet in tweets %}
+        <tr>
+          <th scope="row">{{ tweet.tweet_text }} {% if tweet.is_active %}<span class="badge badge-pill badge-success">Aktiv</span>{% endif %}</th>
+          <td style="white-space:nowrap;">{{ tweet.published_date }}</td>
+          <td>{% if tweet.is_active %}
+            <a class="btn btn-primary btn-sm" href="{% url 'tweet_set_inactive' pk=tweet.tweet_id %}" role="button">Deaktivieren</a>
+            {% else %}
+            <a class="btn btn-success btn-sm" href="{% url 'tweet_set_active' pk=tweet.tweet_id %}" role="button">Aktivieren</a>
+            {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+
+{% endblock %}

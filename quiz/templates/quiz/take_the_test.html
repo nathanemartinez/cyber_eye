@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <div class="container-fluid text-center">
+        <h1>{{ quiz }}</h1>
+
+        {% for question in questions %}
+            <h3>{{ question }}</h3>
+        {% endfor %}
+
+
+        <form method="POST" >
+            {% csrf_token %}
+            {% for question in quiz.question_set.all %}
+                    {{ form }}
+
+            {% endfor %}
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+
+
+

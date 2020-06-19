@@ -1,16 +1,17 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def home(request):
-    return render(request, 'home/home.html')
+class HomeView(TemplateView):
+    template_name = 'home/home.html'
 
 
-def projects(request):
-    return render(request, 'home/projects.html')
+class ProjectsView(TemplateView):
+    template_name = 'home/projects.html'
 
 
-def about(request):
-    return render(request, 'home/about.html')
+class AboutView(TemplateView):
+    template_name = 'home/about.html'
 
 
 # *** ERROR PAGES ***

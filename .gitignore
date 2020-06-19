@@ -1,5 +1,7 @@
 # Added
 tester1.py
+tester2.py
+tester3.py
 .idea/
 
 # Byte-compiled / optimized / DLL files
@@ -55,7 +57,5 @@ celerybeat-schedule
 celerybeat.pid
 
 # Environments
-.venv
 venv/
-venv.bak/
 
