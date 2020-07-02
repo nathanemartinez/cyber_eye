@@ -1,14 +1,16 @@
-# 123edcEDC
+from __future__ import absolute_import, unicode_literals  # For celery
 import os
 import django_heroku
-# from allauth.account.urls import
+# from huey import RedisHuey
+# from redis import ConnectionPool
+
 # Directories
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 ALLAUTH_DIR = os.path.join(BASE_DIR, 'templates', 'allauth')
 DATABASE_DIR = os.path.join(BASE_DIR, 'db.sqlite3')
 
-SECRET_KEY = os.environ.get('cyber_eye_secret_key')
+SECRET_KEY = os.environ.get('CYBER_EYE_SECRET_KEY')
 
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
 
     # Third party
     'crispy_forms',
+    # 'huey.contrib.djhuey',
 
     # My apps
     'home.apps.HomeConfig',
@@ -52,7 +55,7 @@ INSTALLED_APPS = [
 
 # django-allauth
 SITE_ID = 1
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
@@ -135,7 +138,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -149,7 +151,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
@@ -161,6 +162,30 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
-# Keep this at the very bottom of the file
-# This sets a lot of configs for django and heroku
+# EMAIL
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD')
+EMAIL_PORT = 587
+
+
+# Huey task queue settings
+# https://huey.readthedocs.io/en/latest/django.html
+# pool = ConnectionPool(host='my.redis.host', port=6379, max_connections=20)
+# HUEY = RedisHuey('my-app', connection_pool=pool, immediate_use_memory=False)
+
+# HUEY = {
+#     'huey_class': 'huey.SqliteHuey',
+#     'name': DATABASES['default']['NAME'],
+#     'immediate': False,
+    # Options to pass into the consumer when running ``manage.py run_huey``
+    # 'consumer': {
+    #     'workers': 4,
+    #     'worker_type': 'thread',
+    # },
+# }
+
+# Keep this at the very bottom of the file - This sets a lot of configs for django and heroku
 django_heroku.settings(locals())

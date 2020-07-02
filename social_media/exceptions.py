@@ -18,3 +18,6 @@ class InvalidCredentialsError(Exception):
     pass
 
 
+class UnexpectedError(Exception):
+    """ A *VERY* general exception. Raised if anything goes wrong """
+    pass

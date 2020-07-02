@@ -1,21 +1,18 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.db import models
+import tweepy
+import json
+import csv
 
 from social_media.exceptions import InvalidCredentialsError
-
-import tweepy
-
-consumer_key = 'fMISBFv6yEuCATuDx2lMWc62n'
-consumer_secret = 'LAqDJileJeEeFmQUf7KtWEcKTpyjqF3hatb9fha04XNWDSPlky'
-access_token = '1089278284318142464-SLCYIOcKmuOymXnn4ESXslFNFH35U2'
-access_token_secret = '159AL0xv2al4J2ZlfRVEHu5NYgDL8Bzh3jUdVyHBrp8uU'
+from social_media.utils.twitter_utils import GetTwitterData
+from social_media.validators import validate_dictionary_from_json
 
 
 class ApiKey(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField()
 
     api_key = models.CharField(max_length=250)
@@ -40,16 +37,61 @@ class ApiKey(models.Model):
             api.verify_credentials()
         except tweepy.TweepError:
             raise InvalidCredentialsError
-
         super(ApiKey, self).save(*args, **kwargs)
 
 
-class Tweet(models.Model):
-    tweet_id = models.CharField(max_length=250, null=True, blank=True)
-    tweet_text = models.TextField()
-    published_date = models.DateTimeField(blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+class TwitterSpider(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    twitter_user = models.CharField(max_length=20)
+
+    user_info = models.TextField(default='', blank=True, null=True, validators=[validate_dictionary_from_json])
+    user_profile_pictures = models.TextField(default='', blank=True, null=True)
+
+    followers = models.TextField(default='social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)
+    following = models.TextField(default='social_media/media/social_media/twitter/following/default.txt', blank=True, null=True)
 
     def __str__(self):
-        return self.tweet_text
+        return self.twitter_user
+
+    def _remove_at_sign(self):
+        user = self.twitter_user
+        if user.startswith('@'):
+            return user[1:]
+        else:
+            return user
+
+    def _get_followers_or_following(self, spider: GetTwitterData, followers: bool):
+        if followers:
+            info_dict = spider.get_followers(count=10)
+            path = f'social_media/media/social_media/twitter/followers/{self.user.username}_{self.twitter_user}_{self.pk}.txt'
+
+        else:
+            info_dict = spider.get_following(count=10)
+            path = f'social_media/media/social_media/twitter/following/{self.user.username}_{self.twitter_user}_{self.pk}.txt'
+
+        users = [user_obj_list.screen_name for user_obj_list in info_dict]
+        with open(path, 'w', newline='') as file:
+            for user in users:
+                file.write(f'{user}\n')
+        return path
+
+    def save(self, *args, **kwargs):
+        api = get_object_or_404(ApiKey, user=self.user.pk)
+        api = api.get_api()
+        spider = GetTwitterData(api, str(self.twitter_user))
+
+        self.user_info = json.dumps(spider.get_user_information())
+        self.user_profile_pictures = json.dumps(spider.get_user_profile_banner_urls())
+
+        self.twitter_user = self._remove_at_sign()
+        self.followers = self._get_followers_or_following(spider, followers=True)
+        self.following = self._get_followers_or_following(spider, followers=False)
+
+        super(TwitterSpider, self).save(*args, **kwargs)
+
+
+
+
 

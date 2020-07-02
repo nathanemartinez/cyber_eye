@@ -1,6 +1,6 @@
 from django.contrib import admin
-from social_media.models.twitter_model import ApiKey, Tweet
+from social_media.models.twitter_model import ApiKey, TwitterSpider
 
 # Twitter
 admin.site.register(ApiKey)
-admin.site.register(Tweet)
+admin.site.register(TwitterSpider)

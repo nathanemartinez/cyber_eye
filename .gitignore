@@ -2,7 +2,13 @@
 tester1.py
 tester2.py
 tester3.py
+tester4.py
 .idea/
+
+# Huey
+huey.db
+huey.db-shm
+huey.db-wal
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -48,6 +54,8 @@ cover/
 *.log
 db.sqlite3
 db.sqlite3-journal
+db.sqlite3-shm
+db.sqlite3-wal
 
 # Scrapy stuff:
 .scrapy
