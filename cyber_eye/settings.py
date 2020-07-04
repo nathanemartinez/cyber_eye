@@ -1,8 +1,8 @@
 from __future__ import absolute_import, unicode_literals  # For celery
 import os
 import django_heroku
-# from huey import RedisHuey
-# from redis import ConnectionPool
+from huey import RedisHuey
+from redis import ConnectionPool
 
 # Directories
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     # Third party
     'crispy_forms',
-    # 'huey.contrib.djhuey',
+    'huey.contrib.djhuey',
 
     # My apps
     'home.apps.HomeConfig',
@@ -187,6 +187,8 @@ EMAIL_PORT = 587
     # },
 # }
 
+# url = 'redis://h:pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4@ec2-34-204-117-137.compute-1.amazonaws.com:7599'
+# HUEY = RedisHuey('my-app', host=url)
 # Keep this at the very bottom of the file - This sets a lot of configs for django and heroku
 django_heroku.settings(locals())
 

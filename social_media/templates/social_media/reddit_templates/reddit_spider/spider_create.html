@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Create Spider{% endblock %}
+
+{% block content %}
+
+   <div class="container-fluid text-center">
+        <h1>Create a spider</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Create</button>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+

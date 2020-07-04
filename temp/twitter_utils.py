@@ -1,5 +1,4 @@
-from social_media.exceptions import (ProtectedUserError,
-                                     InvalidScreenNameError, InvalidCredentialsError)
+from social_media.exceptions import ProtectedUserError, InvalidScreenNameError, InvalidCredentialsError
 import tweepy
 
 

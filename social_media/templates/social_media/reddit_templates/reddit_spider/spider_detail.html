@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Spider Info{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid text-center">
+        <h1>Info about the spider</h1>
+        <br>
+        <h3>User: {{ spider.reddit_user }}</h3>
+
+        <div class="table-responsive">
+            <table class="table table-hover mx-auto w-auto">
+                <thead class="thead-dark">
+                    <tr>
+                        {% for key in user_info.keys %}
+                            <th scope="col">{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for value in user_info.values %}
+                            {% if 'http' in value %}
+                                <td><a target="_blank" href="{{ value }}">Link</a></td>
+                            {% else %}
+                                <td>{{ value }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <a href="{% url 'social_media:reddit:spider-update' spider.pk %}" class="btn btn-success">Update Spider</a>
+                <a href="{% url 'social_media:reddit:spider-delete' spider.pk %}" class="btn btn-danger">Delete Spider</a>
+            </div>
+            <br>
+            <a href="{% url 'social_media:reddit:spider-list' %}" class="btn btn-primary">Back to all spiders</a>
+        </div>
+    </div>
+
+{% endblock %}
+

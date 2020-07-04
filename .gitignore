@@ -4,6 +4,7 @@ tester2.py
 tester3.py
 tester4.py
 .idea/
+temp/
 
 # Huey
 huey.db

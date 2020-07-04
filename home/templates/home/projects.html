@@ -4,5 +4,9 @@
 {% block content %}
     <div class="container-fluid text-center">
         <h1>Projects page</h1>
+        <br>
+        <h3><a href="{% url 'social_media:twitter:spider-list' %}">Twitter project</a></h3>
+        <h3><a href="{% url 'social_media:tumblr:spider-list' %}">Tumblr project</a></h3>
+        <h3><a href="{% url 'social_media:reddit:spider-list' %}">Reddit project</a></h3>
     </div>
 {% endblock %}

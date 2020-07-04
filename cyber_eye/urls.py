@@ -3,6 +3,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('home.urls')),
+    path('', include('users.urls')),
     path('', include('quiz.urls')),
     path('', include('social_media.main_urls')),
 

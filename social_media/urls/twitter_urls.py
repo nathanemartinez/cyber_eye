@@ -8,5 +8,5 @@ urlpatterns = [
     path('spider-create/', twitter_view.TwitterSpiderCreateView.as_view(), name='spider-create'),
     path('spider-update/<int:pk>/', twitter_view.TwitterSpiderUpdateView.as_view(), name='spider-update'),
     path('spider-delete/<int:pk>/', twitter_view.TwitterSpiderDeleteView.as_view(), name='spider-delete'),
-    # path('index/', twitter_view.index, name='index'),
+    # path('index/<int:pk>/', twitter_view.index, name='index'),
 ]

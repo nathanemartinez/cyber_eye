@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Spider List{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid text-center">
+        <h1>All of your spiders</h1>
+
+        <a href="{% url 'social_media:reddit:spider-create' %}" class="btn btn-primary">Create a new spider</a>
+        <br>
+        <br>
+
+        {% if not spiders %}
+            <h3>You have not created a spider <a href="{% url 'social_media:reddit:spider-create' %}">create a spider</a></h3>
+        {% else %}
+            {% for spider in spiders %}
+                <h3><a href="{% url 'social_media:reddit:spider-detail' spider.id %}">{{ spider }}</a></h3>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+

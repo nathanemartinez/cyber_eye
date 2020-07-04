@@ -10,7 +10,7 @@ from social_media.utils.twitter_utils import GetTwitterData
 from social_media.validators import validate_dictionary_from_json
 
 
-class ApiKey(models.Model):
+class TwitterApiKey(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField()
@@ -37,7 +37,7 @@ class ApiKey(models.Model):
             api.verify_credentials()
         except tweepy.TweepError:
             raise InvalidCredentialsError
-        super(ApiKey, self).save(*args, **kwargs)
+        super(TwitterApiKey, self).save(*args, **kwargs)
 
 
 class TwitterSpider(models.Model):
@@ -78,7 +78,7 @@ class TwitterSpider(models.Model):
         return path
 
     def save(self, *args, **kwargs):
-        api = get_object_or_404(ApiKey, user=self.user.pk)
+        api = get_object_or_404(TwitterApiKey, user=self.user.pk)
         api = api.get_api()
         spider = GetTwitterData(api, str(self.twitter_user))
 
@@ -92,6 +92,11 @@ class TwitterSpider(models.Model):
         super(TwitterSpider, self).save(*args, **kwargs)
 
 
+class DummyModel(models.Model):
+    integer = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.integer}'
 
 
 
