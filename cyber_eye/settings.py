@@ -187,11 +187,14 @@ EMAIL_PORT = 587
 #     },
 # }
 
-HUEY = {"connection": {"host": os.environ.get("REDIS_URL"), "port": 6379}}
+# HUEY = {"connection": {"host": os.environ.get("REDIS_URL"), "port": 6379}}
 
 # url = 'redis://h:pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4@ec2-34-204-117-137.compute-1.amazonaws.com:7599'
 # HUEY = RedisHuey('my-app', host=url)
-
+HUEY = {
+    'name': 'cybereye',
+    'url': 'redis://h:pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4@ec2-34-204-117-137.compute-1.amazonaws.com:7599'
+}
 
 # Keep this at the very bottom of the file - This sets a lot of configs for django and heroku
 django_heroku.settings(locals())

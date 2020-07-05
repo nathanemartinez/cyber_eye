@@ -7,5 +7,5 @@ from social_media.models.twitter_model import DummyModel
 @task()
 def add(num, id):
 	obj = DummyModel.objects.get(id=id)
-	obj.integer += 1
+	obj.integer += num
 	obj.save()

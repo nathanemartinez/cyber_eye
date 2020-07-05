@@ -6,6 +6,11 @@ tester4.py
 .idea/
 temp/
 
+# Huey
+#huey.db
+#huey.db-shm
+#huey.db-wal
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
