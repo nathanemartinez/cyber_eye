@@ -5,14 +5,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 import json
 
 from social_media.models.twitter_model import TwitterSpider
-# from social_media.tasks import add
+from social_media.tasks import add
 from social_media.models.twitter_model import DummyModel
 
-# def index(request, pk):
-#     add(1, pk)
-#     obj = DummyModel.objects.get(id=pk)
-#     return HttpResponse(f"done: {obj.integer}")
-#
+
+def index(request, pk):
+    add(1, pk)
+    obj = DummyModel.objects.get(id=pk)
+    return HttpResponse(f"done: {obj.integer}")
+
 
 class TwitterSpiderListView(LoginRequiredMixin, ListView):
     model = TwitterSpider

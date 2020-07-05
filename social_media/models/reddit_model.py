@@ -30,7 +30,8 @@ class RedditApiKey(models.Model):
 						  client_secret=self.api_secret,
 						  password=self.password,
 						  user_agent=self.user_agent,
-						  username=self.username)
+						  username=self.username
+						)
 		return api
 
 	def save(self, *args, **kwargs):

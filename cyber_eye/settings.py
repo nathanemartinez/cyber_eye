@@ -176,19 +176,22 @@ EMAIL_PORT = 587
 # pool = ConnectionPool(host='my.redis.host', port=6379, max_connections=20)
 # HUEY = RedisHuey('my-app', connection_pool=pool, immediate_use_memory=False)
 
-# HUEY = {
-#     'huey_class': 'huey.SqliteHuey',
-#     'name': DATABASES['default']['NAME'],
-#     'immediate': False,
+HUEY = {
+    'huey_class': 'huey.SqliteHuey',
+    'name': DATABASES['default']['NAME'],
+    'immediate': False,
     # Options to pass into the consumer when running ``manage.py run_huey``
-    # 'consumer': {
-    #     'workers': 4,
-    #     'worker_type': 'thread',
-    # },
-# }
+    'consumer': {
+        'workers': 4,
+        'worker_type': 'thread',
+    },
+}
+
 
 # url = 'redis://h:pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4@ec2-34-204-117-137.compute-1.amazonaws.com:7599'
 # HUEY = RedisHuey('my-app', host=url)
+
+
 # Keep this at the very bottom of the file - This sets a lot of configs for django and heroku
 django_heroku.settings(locals())
 

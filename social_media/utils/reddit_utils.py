@@ -10,9 +10,7 @@ class GetRedditData:
             self.api = api
         except (OAuthException, RequestException, ResponseException):
             raise InvalidCredentialsError
-
         self.username = username
-
         try:
             user_obj = self.api.redditor(self.username)
             if hasattr(user_obj, 'is_suspended'):
@@ -117,3 +115,4 @@ class GetRedditData:
         else:
             posts = self.user.submissions.new(limit=limit)
             return _get_info(posts)
+
