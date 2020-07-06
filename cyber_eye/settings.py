@@ -191,10 +191,17 @@ EMAIL_PORT = 587
 
 # url = 'redis://h:pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4@ec2-34-204-117-137.compute-1.amazonaws.com:7599'
 # HUEY = RedisHuey('my-app', host=url)
-HUEY = {
-    'name': 'cybereye',
-    'url': 'redis://h:pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4@ec2-34-204-117-137.compute-1.amazonaws.com:7599'
-}
+# HUEY = {
+#     'name': 'cybereye',
+#     'url': 'redis://h:pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4@ec2-34-204-117-137.compute-1.amazonaws.com:7599'
+# }
+
+pool = ConnectionPool(host='ec2-34-204-117-137.compute-1.amazonaws.com',
+                      port='7599',
+                      db='0',
+                      password='pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4',
+                      )
+HUEY = RedisHuey('cybereye', connection_pool=pool)
 
 # Keep this at the very bottom of the file - This sets a lot of configs for django and heroku
 django_heroku.settings(locals())
