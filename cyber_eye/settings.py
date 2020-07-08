@@ -180,11 +180,11 @@ EMAIL_PORT = 587
 #     'huey_class': 'huey.SqliteHuey',
 #     'name': DATABASES['default']['NAME'],
 #     'immediate': False,
-#     # Options to pass into the consumer when running ``manage.py run_huey``
-#     'consumer': {
-#         'workers': 4,
-#         'worker_type': 'thread',
-#     },
+#     Options to pass into the consumer when running ``manage.py run_huey``
+    # 'consumer': {
+    #     'workers': 4,
+    #     'worker_type': 'thread',
+    # },
 # }
 
 # HUEY = {"connection": {"host": os.environ.get("REDIS_URL"), "port": 6379}}

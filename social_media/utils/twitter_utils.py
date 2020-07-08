@@ -48,7 +48,7 @@ class GetTwitterData:
         info = {str(key): str(value) for key, value in info.items()}
         return info
 
-    def get_following(self, count):
+    def get_following(self, count: int = 5):
         """
         Get a user object for each person the user is following.
         User obj reference: https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/user-object
@@ -57,7 +57,7 @@ class GetTwitterData:
         """
         return tweepy.Cursor(self.api.friends, screen_name=self.username).items(count)
 
-    def get_followers(self, count):
+    def get_followers(self, count: int = 5):
         """ Same as ".get_following" but with the user's followers """
         return tweepy.Cursor(self.api.followers, screen_name=self.username).items(count)
 
@@ -97,7 +97,7 @@ class GetTwitterData:
         }
         return info
 
-    def get_posts(self, count: int = 100, tweet_mode: str = 'extended',
+    def get_posts(self, count: int = 10, tweet_mode: str = 'extended',
                   exclude_replies: bool = True, include_retweets: bool = False, high_quality_videos: bool = True):
         """
         Media reference: https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/extended-entities-object

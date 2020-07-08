@@ -8,7 +8,8 @@ import csv
 from social_media.exceptions import InvalidCredentialsError
 from social_media.utils.twitter_utils import GetTwitterData
 from social_media.validators import validate_dictionary_from_json
-
+from social_media.tasks import get_user_information, get_user_profile_banner_urls, get_followers_or_following
+# from social_media.tasks import get_followers_or_following, get_user_information, get_user_profile_banner_urls
 
 class TwitterApiKey(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
@@ -62,34 +63,23 @@ class TwitterSpider(models.Model):
         else:
             return user
 
-    def _get_followers_or_following(self, spider: GetTwitterData, followers: bool):
-        if followers:
-            info_dict = spider.get_followers(count=10)
-            path = f'social_media/media/social_media/twitter/followers/{self.user.username}_{self.twitter_user}_{self.pk}.txt'
+    def no_info(self):
+        return self.user_info == ''
 
-        else:
-            info_dict = spider.get_following(count=10)
-            path = f'social_media/media/social_media/twitter/following/{self.user.username}_{self.twitter_user}_{self.pk}.txt'
-
-        users = [user_obj_list.screen_name for user_obj_list in info_dict]
-        with open(path, 'w', newline='') as file:
-            for user in users:
-                file.write(f'{user}\n')
-        return path
-
-    def save(self, *args, **kwargs):
-        api = get_object_or_404(TwitterApiKey, user=self.user.pk)
-        api = api.get_api()
-        spider = GetTwitterData(api, str(self.twitter_user))
-
-        self.user_info = json.dumps(spider.get_user_information())
-        self.user_profile_pictures = json.dumps(spider.get_user_profile_banner_urls())
-
-        self.twitter_user = self._remove_at_sign()
-        self.followers = self._get_followers_or_following(spider, followers=True)
-        self.following = self._get_followers_or_following(spider, followers=False)
-
-        super(TwitterSpider, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.no_info():
+    #         api = TwitterApiKey.objects.first()
+    #         api = api.get_api()
+    #         spider = GetTwitterData(api, str(self.twitter_user))
+    #
+    #         self.twitter_user = self._remove_at_sign()
+    #         # self.user_info = json.dumps(spider.get_user_information())
+    #         # self.user_profile_pictures = json.dumps(spider.get_user_profile_banner_urls())
+    #         get_user_information(spider, self.user, self.twitter_user)
+    #         get_user_profile_banner_urls(spider, self.user, self.twitter_user)
+    #         get_followers_or_following(spider, self.user, self.twitter_user, 2)
+    #
+    #     super(TwitterSpider, self).save(*args, **kwargs)
 
 
 class DummyModel(models.Model):

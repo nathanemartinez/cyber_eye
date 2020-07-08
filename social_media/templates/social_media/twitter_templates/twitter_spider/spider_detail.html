@@ -8,36 +8,44 @@
         <h1>Info about the spider</h1>
         <br>
         <h3>User: {{ spider.twitter_user }}</h3>
-        <table class="table table-hover table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                {% for key in user_info.keys %}
-                    <th scope="col">{{ key }}</th>
-                {% endfor %}
-                {% for key in user_profile_pics.keys %}
-                    <th scope="col">{{ key }}</th>
-                {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    {% for value in user_info.values %}
-                        {% if 'http' in value %}
-                            <td><a target="_blank" href="{{ value }}">Link</a></td>
-                        {% else %}
-                            <td>{{ value }}</td>
-                        {% endif %}
+        {% if spider.no_info %}
+            <h3>We are experiencing API limitations. We will get to work on your "spider" as soon as possible.</h3>
+            <h3>Come back and refresh the page to see if your spider has finished, or **click here** to get an email when your spider is finished.</h3>
+        {% else %}
+            <table class="table table-hover table-responsive">
+                <thead class="thead-dark">
+                    <tr>
+                    {% for key in user_info.keys %}
+                        <th scope="col">{{ key }}</th>
                     {% endfor %}
-                    {% for value in user_profile_pics.values %}
-                        {% if value is not None %}
-                            <td><a target="_blank" href="{{ value }}">Profile Picture</a></td>
-                        {% else %}
-                            <td>None</td>
-                        {% endif %}
+                    {% for key in user_profile_pics.keys %}
+                        <th scope="col">{{ key }}</th>
                     {% endfor %}
-                </tr>
-            </tbody>
-        </table>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for value in user_info.values %}
+                            {% if 'http' in value %}
+                                <td><a target="_blank" href="{{ value }}">Link</a></td>
+                            {% else %}
+                                <td>{{ value }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        {% for value in user_profile_pics.values %}
+                            {% if value is not None %}
+                                <td><a target="_blank" href="{{ value }}">Profile Picture</a></td>
+                            {% else %}
+                                <td>None</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+        <h4>lalalala testing: {{ spider.followers }}</h4>
+        <h4>lalalala testing: {{ spider.following }}</h4>
 
         <div>
             <a href="{% url 'social_media:twitter:spider-update' spider.pk %}" class="btn btn-success">Update Spider</a>

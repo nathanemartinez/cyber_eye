@@ -4,9 +4,9 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 import json
 
-from social_media.models.twitter_model import TwitterSpider
-from social_media.tasks import add
-from social_media.models.twitter_model import DummyModel
+from social_media.models.twitter_model import TwitterSpider, DummyModel, TwitterApiKey
+from social_media.tasks import add, get_followers_or_following, get_user_information, get_user_profile_banner_urls
+from social_media.utils.twitter_utils import GetTwitterData
 
 
 def index(request, pk):
@@ -32,8 +32,11 @@ class TwitterSpiderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailVie
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_info'] = json.loads(self.get_object().user_info)
-        context['user_profile_pics'] = json.loads(self.get_object().user_profile_pictures)
+        user_info = self.get_object().user_info
+        user_profile_pictures = self.get_object().user_profile_pictures
+        if user_info != '' and user_profile_pictures != '':
+            context['user_info'] = json.loads(self.get_object().user_info)
+            context['user_profile_pics'] = json.loads(self.get_object().user_profile_pictures)
         return context
 
     def test_func(self):
@@ -53,6 +56,24 @@ class TwitterSpiderCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        api = TwitterApiKey.objects.first()
+        api = api.get_api()
+        # pk = self.object.pk
+        form = self.get_form()
+        if form.is_valid():
+            twitter_user = form.cleaned_data['twitter_user']
+            # form = form.save(commit=False)
+            form.instance.user = self.request.user
+            form.save()
+            spider = GetTwitterData(api, str(twitter_user))
+            get_user_information(spider, self.request.user, twitter_user)
+            get_user_profile_banner_urls(spider, self.request.user, twitter_user)
+            get_followers_or_following(spider, self.request.user, twitter_user, 2)
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class TwitterSpiderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -84,3 +105,5 @@ class TwitterSpiderDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteVie
     def test_func(self):
         spider = self.get_object()
         return self.request.user == spider.user
+
+
