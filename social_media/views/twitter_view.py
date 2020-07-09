@@ -53,7 +53,8 @@ class TwitterSpiderCreateView(LoginRequiredMixin, CreateView):
     context_object_name = 'spider'
 
     def get_success_url(self):
-        return reverse('social_media:twitter:spider-detail', kwargs={'pk': self.object.pk})
+        return reverse('social_media:twitter:spider-list')
+        # return reverse('social_media:twitter:spider-detail', kwargs={'pk': self.object.pk})
 
     def post(self, request, *args, **kwargs):
         api = TwitterApiKey.objects.first()
