@@ -8,7 +8,7 @@ import csv
 from social_media.exceptions import InvalidCredentialsError
 from social_media.utils.twitter_utils import GetTwitterData
 from social_media.validators import validate_dictionary_from_json
-from social_media.tasks import get_user_information, get_user_profile_banner_urls, get_followers_or_following
+# from social_media.tasks import get_user_information, get_user_profile_banner_urls, get_followers_or_following
 # from social_media.tasks import get_followers_or_following, get_user_information, get_user_profile_banner_urls
 
 class TwitterApiKey(models.Model):
@@ -42,12 +42,12 @@ class TwitterApiKey(models.Model):
 
 
 class TwitterSpider(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     twitter_user = models.CharField(max_length=20)
 
-    user_info = models.TextField(default='', blank=True, null=True, validators=[validate_dictionary_from_json])
+    user_info = models.TextField(default='', blank=True, null=True)
+    # user_info = models.TextField(default='', blank=True, null=True, validators=[validate_dictionary_from_json])
     user_profile_pictures = models.TextField(default='', blank=True, null=True)
 
     followers = models.TextField(default='social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)

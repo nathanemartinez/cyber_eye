@@ -9,8 +9,12 @@
         <br>
         <h3>User: {{ spider.twitter_user }}</h3>
         {% if spider.no_info %}
-            <h3>We are experiencing API limitations. We will get to work on your "spider" as soon as possible.</h3>
-            <h3>Come back and refresh the page to see if your spider has finished, or **click here** to get an email when your spider is finished.</h3>
+            <div class="text-break">
+                <hp>
+                We're experiencing API limitations. Refresh the page or come back later or have us email you to notify
+                you when your spider is ready
+                </hp>
+            </div>
         {% else %}
             <table class="table table-hover table-responsive">
                 <thead class="thead-dark">
@@ -44,15 +48,22 @@
             </table>
         {% endif %}
 
-        <h4>lalalala testing: {{ spider.followers }}</h4>
-        <h4>lalalala testing: {{ spider.following }}</h4>
+        <br>
+        <div class="text-break">
+            <h6>followers path: {{ spider.followers }}</h6>
+            <h6>following path: {{ spider.following }}</h6>
+        </div>
 
+        <br>
         <div>
             <a href="{% url 'social_media:twitter:spider-update' spider.pk %}" class="btn btn-success">Update Spider</a>
             <a href="{% url 'social_media:twitter:spider-delete' spider.pk %}" class="btn btn-danger">Delete Spider</a>
         </div>
+
         <br>
         <a href="{% url 'social_media:twitter:spider-list' %}" class="btn btn-primary">Back to all spiders</a>
+        <br>
+        <br>
 
     </div>
 

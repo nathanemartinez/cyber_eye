@@ -18,31 +18,42 @@ def add(num, id):
 	return num
 
 
+@task()
+def dump_data(info):
+	import json
+	return json.dumps(info)
+
 
 @task()
-def get_user_information(spider, user, twitter_user):
+def get_infoo(spider, user, twitter_user, pk):
 	from social_media.models.twitter_model import TwitterSpider
 	import json
-	obj = TwitterSpider.objects.get(user=user, twitter_user=twitter_user)
-	obj.user_info = json.dumps(spider.get_user_information())
+	obj = TwitterSpider.objects.get(pk=pk)
+	info = spider.get_user_information()
+	obj.user_info = json.dumps(info)
 	obj.save()
 	return None
 
 
 @task()
-def get_user_profile_banner_urls(spider, user, twitter_user):
+def get_picss(spider, user, twitter_user, pk):
 	from social_media.models.twitter_model import TwitterSpider
 	import json
-	obj = TwitterSpider.objects.get(user=user, twitter_user=twitter_user)
-	obj.user_profile_pictures = json.dumps(spider.get_user_profile_banner_urls())
+	obj = TwitterSpider.objects.get(pk=pk)
+	info = spider.get_user_profile_banner_urls()
+	obj.user_profile_pictures = json.dumps(info)
 	obj.save()
 	return None
 
 
 @task()
 def get_followers_or_following(spider, user, twitter_user, num_people):
-	from social_media.models.twitter_model import TwitterSpider
+	from social_media.models.twitter_model import TwitterSpider, TwitterApiKey
+	from social_media.utils.twitter_utils import GetTwitterData
 	obj = TwitterSpider.objects.get(user=user, twitter_user=twitter_user)
+	api = TwitterApiKey.objects.first()
+	api = api.get_api()
+	spider = GetTwitterData(api, str(twitter_user))
 
 	def _upload_file(path, info_dict):
 		with open(path, 'w', newline='') as file:

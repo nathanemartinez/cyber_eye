@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 import json
+import time
 
 from social_media.models.twitter_model import TwitterSpider, DummyModel, TwitterApiKey
-from social_media.tasks import add, get_followers_or_following, get_user_information, get_user_profile_banner_urls
+from social_media.tasks import add, get_followers_or_following, get_infoo, get_picss
 from social_media.utils.twitter_utils import GetTwitterData
 
 
@@ -32,11 +33,12 @@ class TwitterSpiderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailVie
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user_info = self.get_object().user_info
-        user_profile_pictures = self.get_object().user_profile_pictures
-        if user_info != '' and user_profile_pictures != '':
+        if self.get_object().no_info():
+            pass
+        else:
             context['user_info'] = json.loads(self.get_object().user_info)
             context['user_profile_pics'] = json.loads(self.get_object().user_profile_pictures)
+
         return context
 
     def test_func(self):
@@ -53,23 +55,18 @@ class TwitterSpiderCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('social_media:twitter:spider-detail', kwargs={'pk': self.object.pk})
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
     def post(self, request, *args, **kwargs):
         api = TwitterApiKey.objects.first()
         api = api.get_api()
-        # pk = self.object.pk
         form = self.get_form()
         if form.is_valid():
             twitter_user = form.cleaned_data['twitter_user']
-            # form = form.save(commit=False)
             form.instance.user = self.request.user
             form.save()
+            pk = form.instance.pk
             spider = GetTwitterData(api, str(twitter_user))
-            get_user_information(spider, self.request.user, twitter_user)
-            get_user_profile_banner_urls(spider, self.request.user, twitter_user)
+            get_infoo(spider, self.request.user, twitter_user, pk)
+            get_picss(spider, self.request.user, twitter_user, pk)
             get_followers_or_following(spider, self.request.user, twitter_user, 2)
             return self.form_valid(form)
         else:
