@@ -15,16 +15,6 @@ SECRET_KEY = os.environ.get('CYBER_EYE_SECRET_KEY')
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
 
-if DEBUG:
-    ALLOWED_HOSTS = []
-else:
-    ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
-    # Security
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -171,24 +161,32 @@ EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD')
 EMAIL_PORT = 587
 
 
-HUEY = {
-    'huey_class': 'huey.SqliteHuey',
-    'name': DATABASES['default']['NAME'],
-    'immediate': False,
-    # Options to pass into the consumer when running ``manage.py run_huey``
-    'consumer': {
-        'workers': 1,
-        'worker_type': 'thread',
-    },
-}
+if DEBUG:
+    ALLOWED_HOSTS = []
+    # https://huey.readthedocs.io/en/latest/django.html
+    HUEY = {
+        'huey_class': 'huey.SqliteHuey',
+        'name': DATABASES['default']['NAME'],
+        'immediate': False,
+        # Options to pass into the consumer when running ``manage.py run_huey``
+        'consumer': {
+            'workers': 1,
+            'worker_type': 'thread',
+        },
+    }
 
-# https://huey.readthedocs.io/en/latest/django.html
-# pool = ConnectionPool(host='ec2-34-204-117-137.compute-1.amazonaws.com',
-#                       port='7599',
-#                       db='0',
-#                       password='pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4',
-#                       )
-# HUEY = RedisHuey('cybereye', connection_pool=pool)
+else:
+    ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
+    # Security
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    pool = ConnectionPool(host='ec2-34-204-117-137.compute-1.amazonaws.com',
+                          port='7599',
+                          db='0',
+                          password='pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4',
+                          )
+    HUEY = RedisHuey('cybereye', connection_pool=pool)
 
 # Keep this at the very bottom of the file - This sets a lot of configs for django and heroku
 django_heroku.settings(locals())
