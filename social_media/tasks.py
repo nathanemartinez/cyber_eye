@@ -78,11 +78,11 @@ def get_user_posts(twitter_user, num_posts, user, pk):
 		with open(path, 'w', newline='') as file:
 			for key, value in info.items():
 				file.write(f'Num: {key}\n')
-				file.write(f'Text: {value[1]}\n')
-				file.write(f'Hashtags: {value[2]}\n')
-				file.write(f'Mentions: {value[3]}\n')
-				file.write(f'Media: {value[4]}\n')
-				file.write(f'Post link: {value[0]}\n\n\n')
+				file.write(f'Text: {value[1] or None}\n')
+				file.write(f'Hashtags: {value[2] or None}\n')
+				file.write(f'Mentions: {value[3] or None}\n')
+				file.write(f'Media: {value[4] or None}\n')
+				file.write(f'Post link: {value[0] or None}\n\n\n')
 
 	info = spider.get_posts(count=num_posts)
 	path = f'social_media/media/social_media/twitter/posts/{user}_{twitter_user}.txt'
