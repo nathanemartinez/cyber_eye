@@ -9,4 +9,6 @@ urlpatterns = [
     path('spider-update/<int:pk>/', twitter_view.TwitterSpiderUpdateView.as_view(), name='spider-update'),
     path('spider-delete/<int:pk>/', twitter_view.TwitterSpiderDeleteView.as_view(), name='spider-delete'),
     path('index/<int:pk>/', twitter_view.index, name='index'),
+    path('read-followers/<int:pk>/', twitter_view.read_followers, name='read-followers'),
+    path('read-following/<int:pk>/', twitter_view.read_following, name='read-following'),
 ]

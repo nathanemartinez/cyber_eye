@@ -2,11 +2,14 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.utils.encoding import smart_str
+from django.conf import settings
+from django.shortcuts import get_object_or_404
 import json
 import time
 
 from social_media.models.twitter_model import TwitterSpider, DummyModel, TwitterApiKey
-from social_media.tasks import add, get_followers_or_following, get_infoo, get_picss
+from social_media.tasks import add, get_info, get_followers_or_following
 from social_media.utils.twitter_utils import GetTwitterData
 
 
@@ -14,6 +17,24 @@ def index(request, pk):
     add(1, pk)
     obj = DummyModel.objects.get(id=pk)
     return HttpResponse(f"done: {obj.integer}")
+
+
+def read_followers(request, pk):
+    obj = get_object_or_404(TwitterSpider, pk=pk)
+    with open(obj.followers, 'rb') as pdf:
+        response = HttpResponse(pdf.read())
+        response['content_type'] = 'text/plain'
+        response['Content-Disposition'] = 'attachment;filename=file.txt'
+        return response
+
+
+def read_following(request, pk):
+    obj = get_object_or_404(TwitterSpider, pk=pk)
+    with open(obj.following, 'rb') as pdf:
+        response = HttpResponse(pdf.read())
+        response['content_type'] = 'text/plain'
+        response['Content-Disposition'] = 'attachment;filename=file.txt'
+        return response
 
 
 class TwitterSpiderListView(LoginRequiredMixin, ListView):
@@ -38,12 +59,19 @@ class TwitterSpiderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailVie
         else:
             context['user_info'] = json.loads(self.get_object().user_info)
             context['user_profile_pics'] = json.loads(self.get_object().user_profile_pictures)
-
+            context['testing'] = self._get_response(self.get_object().followers)
         return context
 
     def test_func(self):
         spider = TwitterSpider.objects.get(pk=self.kwargs['pk'])
         return self.request.user == spider.user
+
+    @staticmethod
+    def _get_response(file_name):
+        response = HttpResponse(content_type='application/force-download')
+        response['Content-Disposition'] = f'attachment; filename={smart_str(file_name)}'
+        # response['X-Sendfile'] = smart_str(file_name)
+        return response
 
 
 class TwitterSpiderCreateView(LoginRequiredMixin, CreateView):
@@ -57,18 +85,13 @@ class TwitterSpiderCreateView(LoginRequiredMixin, CreateView):
         # return reverse('social_media:twitter:spider-detail', kwargs={'pk': self.object.pk})
 
     def post(self, request, *args, **kwargs):
-        api = TwitterApiKey.objects.first()
-        api = api.get_api()
         form = self.get_form()
         if form.is_valid():
             twitter_user = form.cleaned_data['twitter_user']
             form.instance.user = self.request.user
             form.save()
-            pk = form.instance.pk
-            spider = GetTwitterData(api, str(twitter_user))
-            get_infoo(spider, self.request.user, twitter_user, pk)
-            get_picss(spider, self.request.user, twitter_user, pk)
-            get_followers_or_following(spider, self.request.user, twitter_user, 2)
+            get_info(twitter_user, form.instance.pk)
+            get_followers_or_following(twitter_user, 2, self.request.user.username, form.instance.pk)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

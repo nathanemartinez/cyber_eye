@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db import models
+from django.conf import settings
 import tweepy
 import json
 import csv
@@ -50,8 +51,10 @@ class TwitterSpider(models.Model):
     # user_info = models.TextField(default='', blank=True, null=True, validators=[validate_dictionary_from_json])
     user_profile_pictures = models.TextField(default='', blank=True, null=True)
 
-    followers = models.TextField(default='social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)
-    following = models.TextField(default='social_media/media/social_media/twitter/following/default.txt', blank=True, null=True)
+    followers = models.CharField(max_length=200, default='social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)
+    following = models.CharField(max_length=200, default='social_media/media/social_media/twitter/following/default.txt', blank=True, null=True)
+    # followers = models.FileField(default='settings.MEDIA_ROOT/social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)
+    # following = models.FileField(default='settings.MEDIA_ROOT/social_media/media/social_media/twitter/following/default.txt', blank=True, null=True)
 
     def __str__(self):
         return self.twitter_user
