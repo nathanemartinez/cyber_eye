@@ -63,3 +63,31 @@ def get_followers_or_following(twitter_user, num_people, user, pk):
 
 	obj.save()
 	return None
+
+
+@task()
+def get_user_posts(twitter_user, num_posts, user, pk):
+	from social_media.models.twitter_model import TwitterSpider, TwitterApiKey
+	from social_media.utils.twitter_utils import GetTwitterData
+
+	obj = TwitterSpider.objects.get(pk=pk)
+	api = TwitterApiKey.objects.first().get_api()
+	spider = GetTwitterData(api, str(twitter_user))
+
+	def _upload_file(path: str, info: dict):
+		with open(path, 'w', newline='') as file:
+			for key, value in info.items():
+				file.write(f'Num: {key}\n')
+				file.write(f'Text: {value[1]}\n')
+				file.write(f'Hashtags: {value[2]}\n')
+				file.write(f'Mentions: {value[3]}\n')
+				file.write(f'Media: {value[4]}\n')
+				file.write(f'Post link: {value[0]}\n\n\n')
+
+	info = spider.get_posts(count=num_posts)
+	path = f'social_media/media/social_media/twitter/posts/{user}_{twitter_user}.txt'
+	_upload_file(path, info)
+	obj.user_posts = path
+
+	obj.save()
+	return None

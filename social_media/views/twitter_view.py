@@ -9,7 +9,7 @@ import json
 import time
 
 from social_media.models.twitter_model import TwitterSpider, DummyModel, TwitterApiKey
-from social_media.tasks import add, get_info, get_followers_or_following
+from social_media.tasks import add, get_info, get_followers_or_following, get_user_posts
 from social_media.utils.twitter_utils import GetTwitterData
 
 
@@ -19,19 +19,28 @@ def index(request, pk):
     return HttpResponse(f"done: {obj.integer}")
 
 
-def read_followers(request, pk):
+def download_followers(request, pk):
     obj = get_object_or_404(TwitterSpider, pk=pk)
-    with open(obj.followers, 'rb') as pdf:
-        response = HttpResponse(pdf.read())
+    with open(obj.followers, 'rb') as file:
+        response = HttpResponse(file.read())
         response['content_type'] = 'text/plain'
         response['Content-Disposition'] = 'attachment;filename=file.txt'
         return response
 
 
-def read_following(request, pk):
+def download_following(request, pk):
     obj = get_object_or_404(TwitterSpider, pk=pk)
-    with open(obj.following, 'rb') as pdf:
-        response = HttpResponse(pdf.read())
+    with open(obj.following, 'rb') as file:
+        response = HttpResponse(file.read())
+        response['content_type'] = 'text/plain'
+        response['Content-Disposition'] = 'attachment;filename=file.txt'
+        return response
+
+
+def download_posts(request, pk):
+    obj = get_object_or_404(TwitterSpider, pk=pk)
+    with open(obj.user_posts, 'rb') as file:
+        response = HttpResponse(file.read())
         response['content_type'] = 'text/plain'
         response['Content-Disposition'] = 'attachment;filename=file.txt'
         return response
@@ -92,6 +101,7 @@ class TwitterSpiderCreateView(LoginRequiredMixin, CreateView):
             form.save()
             get_info(twitter_user, form.instance.pk)
             get_followers_or_following(twitter_user, 2, self.request.user.username, form.instance.pk)
+            get_user_posts(twitter_user, 2, self.request.user.username, form.instance.pk)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)

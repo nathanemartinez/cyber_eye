@@ -174,7 +174,6 @@ if DEBUG:
             'worker_type': 'thread',
         },
     }
-
 else:
     ALLOWED_HOSTS = ['cybereyeproject.herokuapp.com']
     # Security

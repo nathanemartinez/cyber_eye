@@ -97,8 +97,9 @@ class GetTwitterData:
         }
         return info
 
-    def get_posts(self, count: int = 10, tweet_mode: str = 'extended',
-                  exclude_replies: bool = True, include_retweets: bool = False, high_quality_videos: bool = True):
+    def get_posts(self, count: int = 5, tweet_mode: str = 'extended',
+                  exclude_replies: bool = True, include_retweets: bool = False,
+                  high_quality_videos: bool = True):
         """
         Media reference: https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/extended-entities-object
         Gets the user's tweets and retweets. As well as hashtags.

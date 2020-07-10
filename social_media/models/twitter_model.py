@@ -51,8 +51,9 @@ class TwitterSpider(models.Model):
     # user_info = models.TextField(default='', blank=True, null=True, validators=[validate_dictionary_from_json])
     user_profile_pictures = models.TextField(default='', blank=True, null=True)
 
-    followers = models.CharField(max_length=200, default='social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)
-    following = models.CharField(max_length=200, default='social_media/media/social_media/twitter/following/default.txt', blank=True, null=True)
+    followers = models.CharField(max_length=500, default='social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)
+    following = models.CharField(max_length=500, default='social_media/media/social_media/twitter/following/default.txt', blank=True, null=True)
+    user_posts = models.CharField(max_length=500, default='social_media/media/social_media/twitter/posts/default.txt', blank=True, null=True)
     # followers = models.FileField(default='settings.MEDIA_ROOT/social_media/media/social_media/twitter/followers/default.txt', blank=True, null=True)
     # following = models.FileField(default='settings.MEDIA_ROOT/social_media/media/social_media/twitter/following/default.txt', blank=True, null=True)
 

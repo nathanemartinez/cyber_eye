@@ -8,7 +8,6 @@
         <h1>Info about the spider</h1>
         <br>
         <h3>User: {{ spider.twitter_user }}</h3>
-        <h3>Testing: {{ testing }}</h3>
         {% if spider.no_info %}
             <div class="text-break">
                 <h3>
@@ -51,8 +50,9 @@
 
         <br>
         <div class="text-break">
-            <h6><a href="{% url 'social_media:twitter:read-followers' spider.pk %}">followers path</a></h6>
-            <h6><a href="{% url 'social_media:twitter:read-following' spider.pk %}">following path</a></h6>
+            <h6><a href="{% url 'social_media:twitter:download-followers' spider.pk %}">Followers text file download</a></h6>
+            <h6><a href="{% url 'social_media:twitter:download-following' spider.pk %}">Following text file download</a></h6>
+            <h6><a href="{% url 'social_media:twitter:download-posts' spider.pk %}">User posts text file download</a></h6>
         </div>
 
         <br>
