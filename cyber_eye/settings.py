@@ -180,11 +180,8 @@ else:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    pool = ConnectionPool(host='ec2-34-204-117-137.compute-1.amazonaws.com',
-                          port='7599',
-                          db='0',
-                          password='pc42c38ab33253d80428caf0f6f503b1750a681280c06110d9aa38fa0de0a44a4',
-                          )
+    # add credentials 
+    pool = ConnectionPool()
     HUEY = RedisHuey('cybereye', connection_pool=pool)
 
 # Keep this at the very bottom of the file - This sets a lot of configs for django and heroku
