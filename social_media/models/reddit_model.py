@@ -27,11 +27,11 @@ class RedditApiKey(models.Model):
 
 	def get_api(self):
 		api = praw.Reddit(client_id=self.api_key,
-						  client_secret=self.api_secret,
-						  password=self.password,
-						  user_agent=self.user_agent,
-						  username=self.username
-						)
+			client_secret=self.api_secret,
+			password=self.password,
+			user_agent=self.user_agent,
+			username=self.username
+		)
 		return api
 
 	def save(self, *args, **kwargs):
