@@ -45,7 +45,6 @@ class TumblrSpider(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	date_created = models.DateTimeField(auto_now_add=True)
 	blog_name = models.CharField(max_length=50)
-
 	user_info = models.TextField(default='', blank=True, null=True, validators=[validate_dictionary_from_json])
 
 	def __str__(self):
